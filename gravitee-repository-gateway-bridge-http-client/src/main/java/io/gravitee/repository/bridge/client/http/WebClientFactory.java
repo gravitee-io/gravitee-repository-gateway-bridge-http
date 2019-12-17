@@ -18,6 +18,7 @@ package io.gravitee.repository.bridge.client.http;
 import io.gravitee.common.http.HttpHeaders;
 import io.gravitee.common.http.HttpStatusCode;
 import io.gravitee.common.util.Version;
+import io.gravitee.repository.bridge.client.utils.BridgePath;
 import io.gravitee.repository.bridge.client.utils.VertxCompletableFuture;
 import io.vertx.circuitbreaker.CircuitBreaker;
 import io.vertx.circuitbreaker.CircuitBreakerOptions;
@@ -102,7 +103,7 @@ public class WebClientFactory implements FactoryBean<WebClient> {
     private Future<WebClientInternal> validateConnection(WebClientInternal client) {
         logger.info("Validate Bridge Server connection ...");
         return circuitBreaker.execute(
-                future -> client.get("/_bridge").as(BodyCodec.string()).send(response -> {
+                future -> client.get(BridgePath.get(environment)).as(BodyCodec.string()).send(response -> {
                     if (response.succeeded()) {
                         HttpResponse<String> httpResponse = response.result();
 
@@ -156,7 +157,6 @@ public class WebClientFactory implements FactoryBean<WebClient> {
         options.setDefaultHost(uri.getHost());
         options.setDefaultPort(uri.getPort() != -1 ? uri.getPort() :
                 (HTTPS_SCHEME.equals(uri.getScheme()) ? 443 : 80));
-
         return options;
     }
 
