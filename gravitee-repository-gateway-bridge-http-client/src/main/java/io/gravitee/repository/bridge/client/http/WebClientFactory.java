@@ -43,6 +43,7 @@ import java.util.Base64;
 
 /**
  * @author David BRASSELY (david.brassely at graviteesource.com)
+ * @author Nicolas GERAUD (nicolas.geraud at graviteesource.com)
  * @author GraviteeSource Team
  */
 public class WebClientFactory implements FactoryBean<WebClient> {
@@ -154,9 +155,16 @@ public class WebClientFactory implements FactoryBean<WebClient> {
         String url = readPropertyValue(propertyPrefix + "url");
         final URI uri = URI.create(url);
 
-        options.setDefaultHost(uri.getHost());
-        options.setDefaultPort(uri.getPort() != -1 ? uri.getPort() :
-                (HTTPS_SCHEME.equals(uri.getScheme()) ? 443 : 80));
+        options
+                .setDefaultHost(uri.getHost())
+                .setDefaultPort(uri.getPort() != -1 ? uri.getPort() :
+                        (HTTPS_SCHEME.equals(uri.getScheme()) ? 443 : 80));
+
+        if (HTTPS_SCHEME.equals(uri.getScheme())) {
+            options
+                    .setSsl(true)
+                    .setTrustAll(true);
+        }
         return options;
     }
 
