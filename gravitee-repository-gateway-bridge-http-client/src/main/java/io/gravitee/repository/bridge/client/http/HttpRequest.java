@@ -162,7 +162,7 @@ public class HttpRequest<T> {
             return completable.get();
         } catch (Exception ex) {
             logger.error("Unexpected error", ex);
-            return null;
+            throw new RuntimeException(ex);
         }
     }
 }
