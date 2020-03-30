@@ -49,6 +49,11 @@ public class HttpMembershipRepository extends AbstractRepository implements Memb
     }
 
     @Override
+    public void deleteMembers(MembershipReferenceType referenceType, String referenceId) throws TechnicalException {
+        throw new IllegalStateException();
+    }
+
+    @Override
     public Optional<Membership> findById(String userId, MembershipReferenceType referenceType, String referenceId) throws TechnicalException {
         throw new IllegalStateException();
     }
