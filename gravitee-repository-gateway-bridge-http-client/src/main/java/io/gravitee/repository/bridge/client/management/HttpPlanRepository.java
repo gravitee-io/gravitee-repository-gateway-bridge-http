@@ -21,6 +21,7 @@ import io.gravitee.repository.management.api.PlanRepository;
 import io.gravitee.repository.management.model.Plan;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -50,6 +51,12 @@ public class HttpPlanRepository extends AbstractRepository implements PlanReposi
     @Override
     public void delete(String s) throws TechnicalException {
         throw new IllegalStateException();
+    }
+
+    @Override
+    public List<Plan> findByApis(List<String> apiIds) throws TechnicalException {
+        return blockingGet(post("/plans/", BodyCodecs.list(Plan.class))
+                .send(apiIds));
     }
 
     @Override
